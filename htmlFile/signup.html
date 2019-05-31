@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" type='text/css'>
+  <style type="text/css">
+    body {
+      font-family: 'Montserrat', sans-serif;
+      width: 98%;
+      color: white;
+      background: url(https://us.123rf.com/450wm/neyro2008/neyro20081611/neyro2008161100072/67379974-%EB%B3%84%EA%B3%BC-%EA%B3%B5%EA%B0%84-%EB%B2%A1%ED%84%B0-%EB%B0%B0%EA%B2%BD%EC%9E%85%EB%8B%88%EB%8B%A4-%EA%B0%A4%EB%9F%AD%EC%8B%9C%EC%99%80-%EC%9A%B0%EC%A3%BC%EC%97%90%EC%84%9C-%ED%96%89%EC%84%B1-%EC%9A%B0%EC%A3%BC-%ED%8C%A8%ED%84%B4%EC%9E%85%EB%8B%88%EB%8B%A4-%EC%9A%B0%EC%A3%WBC-%EA%B3%B5%EA%B0%84-%EB%AC%B4%ED%95%9C%EB%8C%80%EC%99%80-%EB%B3%84%EB%B9%9B-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4%EC%85%98.jpg?ver=6);
+      font-size: 18px;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-color: transparent;
+    }
+
+    .form-style-8 {
+      font-family: 'Montserrat', sans-serif;
+      width: 500px;
+      padding: 30px;
+      background: transparent;
+      margin: 50px auto;
+    }
+
+    .form-style-8 h2 {
+      background: transparent;
+      text-transform: uppercase;
+      font-family: 'Open Sans Condensed', sans-serif;
+      color: #f9f9f9;
+      font-size: 20px;
+      font-weight: 100;
+      padding: 20px;
+      margin: -30px -30px 30px -30px;
+    }
+
+    .form-style-8 input[type="text"],
+    .form-style-8 input[type="date"],
+    .form-style-8 input[type="datetime"],
+    .form-style-8 input[type="email"],
+    .form-style-8 input[type="number"],
+    .form-style-8 input[type="search"],
+    .form-style-8 input[type="time"],
+    .form-style-8 input[type="url"],
+    .form-style-8 input[type="password"],
+    .form-style-8 textarea,
+    .form-style-8 select {
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      outline: none;
+      display: block;
+      width: 100%;
+      padding: 7px;
+      border: none;
+      border-bottom: 1px solid #ddd;
+      background: transparent;
+      margin-bottom: 10px;
+      font: 16px Arial, Helvetica, sans-serif;
+      height: 45px;
+    }
+
+    .form-style-8 textarea {
+      resize: none;
+      overflow: hidden;
+    }
+
+    .form-style-8 input[type="button"],
+    .form-style-8 input[type="submit"] {
+      background-color: transparent;
+      border: 1px solid white;
+      display: inline-block;
+      cursor: pointer;
+      color: white;
+      font-family: 'Open Sans Condensed', sans-serif;
+      font-size: 14px;
+      padding: 8px 18px;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    input {
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-style-8" style="text-align: center;">
+    <h2>Create Account</h2>
+    Name:<br>
+    <input type="text" id="name" name="name" placeholder="Name" required>
+    <br>Id:<br>
+    <input type="text" id="id" name="id" placeholder="Id" required>
+    <br>Password:<br>
+    <input type="text" id="password" name="password" placeholder="Password" required>
+    <br>Phone:<br>
+    <input type="text" id="phone" name="phone" placeholder="Phone" required>
+    <br>Email:<br>
+    <input type="text" id="email" name="email" placeholder="Email" required>
+    <br><br>
+    <input type="button" name="button" value="SUBMIT" onclick="checkValidation();">
+  </div>
+
+  <script>
+    function requestParameter(data) {
+      let xhttp = new XMLHttpRequest();
+
+      xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+          console.log('success');
+          console.log(this.responseText);
+          if (this.responseText.error) {
+            alert("Error!!!");
+            return;
+          }
+
+          window.location.href = "http://localhost:3000/"
+        }
+      };
+
+      xhttp.open('POST', '/signup', true);
+      xhttp.send(JSON.stringify(data));
+      // https://www.w3schools.com/nodejs/met_buffer_tostring.asp
+    }
+
+
+    function checkValidation() {
+      let name = document.getElementById("name").value;
+      let id = document.getElementById("id").value;
+      let password = document.getElementById("password").value;
+      let phone = document.getElementById("phone").value;
+      let email = document.getElementById("email").value;
+
+      let getName = validateName(name);
+      let getId = validateId(id);
+      let getPassword = validatePassword(password);
+      let getPhone = validatePhone(phone);
+      let getEmail = validateEmail(email);
+
+      let user = {
+        name: getName[1],
+        id: getId[1],
+        password: getPassword[1],
+        phone: getPhone[1],
+        email: getEmail[1]
+      }
+
+      if (getName[0] === true && getPassword[0] === true && getPhone[0] === true && getEmail[0] === true) {
+        requestParameter(user);
+      }
+      return false;
+    }
+
+
+    function validateName(name) {
+      if (name.length < 1) {
+        alert("Please Enter a Valid name: more than one character")
+        return false;
+
+      }
+
+      return [true, name];
+    }
+
+    function validateId(id) {
+      if (id.length < 5) {
+        alert("Please Enter a Valid ID: more than five character");
+        document.getElementById("id").value = "";
+        return false;
+      }
+
+      return [true, id];
+    }
+
+
+    function validatePassword(password) {
+      let password_pattern = /^[A-Za-z]\w{7,14}$/;
+
+      if (password.match(password_pattern)) {
+        return [true, password];
+      }
+
+      alert(
+        "Please Enter a Valid Password: Between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter"
+      );
+      document.getElementById("password").value = "";
+      return false;
+    }
+
+    function validatePhone(phone) {
+      let phone_pattern = "[0-9]{3}-[0-9]{4}-[0-9]{4}"
+
+      if (phone.match(phone_pattern)) {
+        return [true, phone];
+      }
+
+      alert('Please Enter a Valid phone number');
+      document.getElementById("phone").value = "";
+      return false
+    }
+
+    function validateEmail(email) {
+      let atposition = email.indexOf("@");
+      let dotposition = email.indexOf(".");
+      if (atposition < 1 || dotposition < atposition + 2 || dotposition + 2 > email.length) {
+        alert('Please Enter a Valid e-mail address');
+        document.getElementById("email").value = "";
+        return false
+      }
+
+      return [true, email];
+    }
+  </script>
+  <script type="text/javascript">
+    //auto expand textarea
+    function adjust_textarea(h) {
+      h.style.height = "20px";
+      h.style.height = (h.scrollHeight) + "px";
+    }
+  </script>
+</body>
+
+</html>

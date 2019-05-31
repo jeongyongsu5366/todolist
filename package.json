@@ -1,0 +1,24 @@
+{
+  "name": "diy-node-router",
+  "version": "1.0.0",
+  "description": "This repository accompanies the article \"Understanding Express.js: Creating Your Own Node HTTP Request Router.\" The repository contains a do-it-yourself node router that emulates the functionality of the Express.js router.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "route-parser": "0.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeongyongsu5366/diy-node-router.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/jeongyongsu5366/diy-node-router/issues"
+  },
+  "homepage": "https://github.com/jeongyongsu5366/diy-node-router#readme",
+  "devDependencies": {}
+}

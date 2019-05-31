@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div style="text-align: center;">
+    <h2>Create Account</h2>
+    name:<br>
+    <input type="text" id="name" name="name" required>
+    <br>id:<br>
+    <input type="text" id="id" name="id" required>
+    <br>password:<br>
+    <input type="text" id="password" name="password" required>
+    <br>phone:<br>
+    <input type="text" id="phone" name="phone" required>
+    <br>email:<br>
+    <input type="text" id="email" name="email" required>
+    <br><br>
+    <input type="button" name="button" value="Submit" onclick="checkValidation();">
+  </div>
+
+  <script>
+    function requestParameter(data) {
+      let xhttp = new XMLHttpRequest();
+      xhttp.open('POST', '/test', true);
+
+      xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+          console.log('success');
+          console.log(this.responseText);
+          if (this.responseText.error) {
+            alert("Error!!!");
+            return;
+          }
+
+          window.location.href = "http://localhost:3000/test"
+        }
+      };
+
+      xhttp.send(JSON.stringify(data));
+      // https://www.w3schools.com/nodejs/met_buffer_tostring.asp
+    }
+
+
+    function checkValidation() {
+      let name = document.getElementById("name").value;
+      let id = document.getElementById("id").value;
+      let password = document.getElementById("password").value;
+      let phone = document.getElementById("phone").value;
+      let email = document.getElementById("email").value;
+
+      let getName = validateName(name);
+      let getId = validateId(id);
+      let getPassword = validatePassword(password);
+      let getPhone = validatePhone(phone);
+      let getEmail = validateEmail(email);
+
+      let user = {
+        name: getName[1],
+        id: getId[1],
+        password: getPassword[1],
+        phone: getPhone[1],
+        email: getEmail[1]
+      }
+
+      if (getName[0] === true && getPassword[0] === true && getPhone[0] === true && getEmail[0] === true) {
+        requestParameter(user);
+      }
+      return false;
+    }
+
+
+    function validateName(name) {
+      if (name.length < 1) {
+        alert("Please Enter a Valid name: more than one character")
+        return false;
+
+      }
+
+      return [true, name];
+    }
+
+    function validateId(id) {
+      if (id.length < 5) {
+        alert("Please Enter a Valid ID: more than five character");
+        document.getElementById("id").value = "";
+        return false;
+      }
+
+      return [true, id];
+    }
+
+
+    function validatePassword(password) {
+      let password_pattern = /^[A-Za-z]\w{7,14}$/;
+
+      if (password.match(password_pattern)) {
+        return [true, password];
+      }
+
+      alert(
+        "Please Enter a Valid Password: Between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter"
+        );
+      document.getElementById("password").value = "";
+      return false;
+    }
+
+    function validatePhone(phone) {
+      let phone_pattern = "[0-9]{3}-[0-9]{4}-[0-9]{4}"
+
+      if (phone.match(phone_pattern)) {
+        return [true, phone];
+      }
+
+      alert('Please Enter a Valid phone number');
+      document.getElementById("phone").value = "";
+      return false
+    }
+
+    function validateEmail(email) {
+      let atposition = email.indexOf("@");
+      let dotposition = email.indexOf(".");
+      if (atposition < 1 || dotposition < atposition + 2 || dotposition + 2 > email.length) {
+        alert('Please Enter a Valid e-mail address');
+        document.getElementById("email").value = "";
+        return false
+      }
+
+      return [true, email];
+    }
+  </script>
+</body>
+
+</html>
